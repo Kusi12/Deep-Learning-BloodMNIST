@@ -87,27 +87,25 @@ Se implementa **ResNet-18** (`torchvision.models.resnet18`, `weights=None`) con 
 | Scheduler | `MultiStepLR`, milestones en épocas 50 y 75, gamma = 0.1 |
 | Hardware recomendado | GPU (Colab T4) |
 
-Configuración: Épocas: 100 | Función de pérdida: Cross-Entropy Loss | Optimizador: Adam (η= 0.001) | Batch size: 128 | Scheduler: MultiStepLR (milestones en épocas 50 y 75, γ = 0.1).
-
-Fundamentación Técnica: La elección de estos hiperparámetros no es arbitraria; replica exactamente el esquema base (baseline) oficial establecido por los autores del benchmark MedMNIST v2. El uso de Cross-Entropy es estándar para multiclase y el scheduler permite refinar la convergencia en etapas finales.
+- Fundamentación Técnica: La elección de estos hiperparámetros no es arbitraria; replica exactamente el esquema base (baseline) oficial establecido por los autores del benchmark MedMNIST v2. El uso de Cross-Entropy es estándar para multiclase y el scheduler permite refinar la convergencia en etapas finales.
 
 ## 6. Dinámica y Evaluación de Entrenamiento
 
-Trazabilidad: Se registra el historial de pérdida de entrenamiento (L train) y precisión de validación por época, graficando las curvas con líneas verticales que marcan las caídas del learning rate.
+- Trazabilidad: Se registra el historial de pérdida de entrenamiento (L train) y precisión de validación por época, graficando las curvas con líneas verticales que marcan las caídas del learning rate.
 
-Control de Entrenamiento: Se aplica checkpointing guardando automáticamente el mejor modelo en mejor_modelo_bloodmnist.pth (basado en la mayor precisión de validación).
+- Control de Entrenamiento: Se aplica checkpointing guardando automáticamente el mejor modelo en mejor_modelo_bloodmnist.pth (basado en la mayor precisión de validación).
 
 ## 7. Evaluación en Test y Métricas
 
-Desempeño Global: Precisión final en test de 94.94% (Accuracy global de 0.95). Mejor precisión de validación: 95.91%.
+- Desempeño Global: Precisión final en test de 94.94% (Accuracy global de 0.95). Mejor precisión de validación: 95.91%.
 
-Métricas Detalladas (Test Set, 3,421 imágenes):
+- Métricas Detalladas (Test Set, 3,421 imágenes):
 
-Reporte de Clasificación: Incluye Precision, Recall y F1-score por clase (destacando clases como Basophil, Eosinophil, Platelet, etc.).
+- Reporte de Clasificación: Incluye Precision, Recall y F1-score por clase (destacando clases como Basophil, Eosinophil, Platelet, etc.).
 
-Matriz de Confusión: Generada mediante un mapa de calor (heatmap) para identificar confusiones específicas (ej. clases IG y Monocyte).
+- Matriz de Confusión: Generada mediante un mapa de calor (heatmap) para identificar confusiones específicas (ej. clases IG y Monocyte).
 
-Inferencia Visual: El notebook incluye pruebas interactivas con imágenes propias y muestras aleatorias del conjunto .npz mostrando el top-3 de probabilidades y niveles de confianza (softmax).
+- Inferencia Visual: El notebook incluye pruebas interactivas con imágenes propias y muestras aleatorias del conjunto .npz mostrando el top-3 de probabilidades y niveles de confianza (softmax).
 
 Resultados obtenidos en la corrida registrada en el notebook:
 
