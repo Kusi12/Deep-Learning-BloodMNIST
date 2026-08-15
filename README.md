@@ -1,6 +1,5 @@
 # Clasificación de Células Sanguíneas con ResNet (BloodMNIST)
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Kusi12/Deep-Learning-BloodMNIST/blob/main/Blood_classification.ipynb)
 
 Trabajo final del seminario **Deep Learning applied in Bioimage Analysis** -- Pontificia Universidad Católica del Perú (PUCP).
 
