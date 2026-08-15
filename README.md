@@ -136,13 +136,14 @@ Las clases con menor desempeño son `IG` (granulocito inmaduro) y `Monocyte`, pr
 
 ## 8. Conclusiones y Sentido Crítico
 
-Hallazgos: El modelo alcanza un rendimiento competitivo cercano al benchmark oficial. Las clases con menor desempeño son IG (granulocito inmaduro) y Monocyte, debido al solapamiento visual provocado por la baja resolución.
+- Hallazgos: El modelo alcanza un rendimiento competitivo cercano al benchmark oficial. Las clases con menor desempeño son IG (granulocito inmaduro) y Monocyte, debido al solapamiento visual provocado por la baja resolución.
 
-Limitaciones y advertencias: Restricción de resolución y uso clínico: Los conjuntos de datos de MedMNIST están diseñados exclusivamente para benchmarking ligero de modelos. Las imágenes de BloodMNIST están comprimidas a 28x28  píxeles, lo que genera una pérdida masiva de detalle frente a las fotografías reales de laboratorio (3x360x363 originales recortadas a 3x200x200). Por esta razón, los autores advierten explícitamente que el modelo no está destinado para uso clínico, ya que una reducción tan sustancial de la resolución puede ser insuficiente para capturar patologías complejas.
+- Limitaciones y advertencias:
+   Restricción de resolución y uso clínico: Los conjuntos de datos de MedMNIST están diseñados exclusivamente para benchmarking ligero de modelos. Las imágenes de BloodMNIST están comprimidas a 28x28  píxeles, lo que genera una pérdida masiva de detalle frente a las fotografías reales de laboratorio (3x360x363 originales recortadas a 3x200x200). Por esta razón, los autores advierten explícitamente que el modelo no está destinado para uso clínico, ya que una reducción tan sustancial de la resolución puede ser insuficiente para capturar patologías complejas.
 
-Entrenamiento desde cero: El modelo se entrena completamente desde cero (sin pesos preentrenados de transfer learning), lo que limita la capacidad de generalización frente a variaciones en la tinción o artefactos de captura externos.
+   Entrenamiento desde cero: El modelo se entrena completamente desde cero (sin pesos preentrenados de transfer learning), lo que limita la capacidad de generalización frente a variaciones en la tinción o artefactos de captura externos.
 
-Propuestas de mejora para traducción e investigación futura:
+- Propuestas de mejora para traducción e investigación futura:
 
 Para superar estas limitaciones y avanzar hacia un entorno de validación real o clínico, se propone:
 
