@@ -24,7 +24,7 @@ Trabajo final del seminario **Deep Learning applied in Bioimage Analysis** -- Po
 
 ## Descripción general
 
-Este notebook implementa un pipeline completo de *deep learning* con **PyTorch** para resolver un problema de **clasificación multiclase de células sanguíneas periféricas** a partir de imágenes microscópicas de baja resolución. El objetivo es evaluar la capacidad de abstracción y generalización de una arquitectura convolucional profunda (ResNet) entrenada **desde cero** (sin pesos preentrenados) sobre el benchmark **BloodMNIST**.
+El notebook `Blood_classification_v4.ipynb` implementa un pipeline completo de *deep learning* con **PyTorch** para resolver un problema de **clasificación multiclase de células sanguíneas periféricas** a partir de imágenes microscópicas de baja resolución. El objetivo es evaluar la capacidad de abstracción y generalización de una arquitectura convolucional profunda (ResNet) entrenada **desde cero** (sin pesos preentrenados) sobre el benchmark **BloodMNIST**.
 
 ## Dataset: BloodMNIST
 
