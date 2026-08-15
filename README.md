@@ -49,13 +49,13 @@ La aplicación biomédica de esta tarea es automatizar el conteo y clasificació
 | Origen | Células individuales normales, sin infecciones, enfermedades hematológicas/oncológicas ni tratamiento farmacológico |
 | Preprocesamiento | Recorte central + redimensionado a 28×28 px |
 
-Adquisición y Dimensiones: Las imágenes originales tenían una resolución de 3x360x363 píxeles. Luego, fueron recortadas en el centro a 3x200x200 y finalmente redimensionadas a 3x28x28 mediante interpolación spline cúbica.  
+- Adquisición y Dimensiones: Las imágenes originales tenían una resolución de 3x360x363 píxeles. Luego, fueron recortadas en el centro a 3x200x200 y finalmente redimensionadas a 3x28x28 mediante interpolación spline cúbica.  
 
-Balance de Clases: Total de 17,092 imágenes organizadas en 8 clases (Basophil, Eosinophil, Erythroblast, IG, Lymphocyte, Monocyte, Neutrophil, Platelet). No existe un desbalance de clases severo.  
+- Balance de Clases: Total de 17,092 imágenes organizadas en 8 clases (Basophil, Eosinophil, Erythroblast, IG, Lymphocyte, Monocyte, Neutrophil, Platelet). No existe un desbalance de clases severo.  
 
-Splits: Se mantuvo la división oficial de MedMNIST (70% train / 10% val / 20% test) para garantizar una comparación justa y reproducible con el benchmark oficial.  
+- Splits: Se mantuvo la división oficial de MedMNIST (70% train / 10% val / 20% test) para garantizar una comparación justa y reproducible con el benchmark oficial.  
 
-Los datos se descargan automáticamente mediante la librería medmnist y se cargan en DataLoaders de PyTorch con batch_size=128.
+- Los datos se descargan automáticamente mediante la librería medmnist y se cargan en DataLoaders de PyTorch con batch_size=128.
 
 
 ## 2. Feature Engineering y Exploración Visual
