@@ -4,7 +4,7 @@
 
 Trabajo final del seminario **Deep Learning applied in Bioimage Analysis** -- Pontificia Universidad Católica del Perú (PUCP).
 
-**Autores:** Gianfranco Moises Poma Canchari, Valeshka Lavado Guerra, Andy Edery Wusen, Kusi Uñapillco Franco
+**Autores:** Gianfranco Moises Poma Canchari --100%, Valeshka Lavado Guerra --100%, Andy Edery Wusen --100%, Kusi Uñapillco Franco --100%
 
 ---
 
