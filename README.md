@@ -1,6 +1,8 @@
 # Clasificación de Células Sanguíneas con ResNet (BloodMNIST)
 
 
+Link de video de prueba interactiva: https://drive.google.com/file/d/1qIaUdwLFmHAQbpFyD9Xh_m-96i_X6Sk7/view?usp=sharing
+
 Trabajo final del seminario **Deep Learning applied in Bioimage Analysis** -- Pontificia Universidad Católica del Perú (PUCP).
 
 **Autores:** Gianfranco Moises Poma Canchari --100%, Valeshka Lavado Guerra --100%, Andy Edery Wusen --100%, Kusi Uñapillco Franco --100%
