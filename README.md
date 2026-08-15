@@ -26,6 +26,10 @@ Trabajo final del seminario **Deep Learning applied in Bioimage Analysis** -- Po
 
 El notebook `Blood_classification_v4.ipynb` implementa un pipeline completo de *deep learning* con **PyTorch** para resolver un problema de **clasificación multiclase de células sanguíneas periféricas** a partir de imágenes microscópicas de baja resolución. El objetivo es evaluar la capacidad de abstracción y generalización de una arquitectura convolucional profunda (ResNet) entrenada **desde cero** (sin pesos preentrenados) sobre el benchmark **BloodMNIST**.
 
+## Relevancia
+
+La aplicación biomédica de esta tarea es automatizar el conteo y clasificación celular en frotis de sangre periférica, lo cual acelera diagnósticos en hematología y reduce la carga operativa en laboratorios.
+
 ## Dataset: BloodMNIST
 
 Se utiliza **BloodMNIST**, parte de la colección estandarizada **MedMNIST v2**, un conjunto de benchmarks ligeros para evaluar algoritmos de Machine Learning en imágenes biomédicas.
@@ -64,6 +68,10 @@ Se implementa **ResNet-18** (`torchvision.models.resnet18`, `weights=None`) con 
 | Batch size | 128 |
 | Scheduler | `MultiStepLR`, milestones en épocas 50 y 75, gamma = 0.1 |
 | Hardware recomendado | GPU (Colab T4) |
+
+## Justificación:
+
+La elección de Adam (lr=0.001), Batch Size de 128, Cross-Entropy Loss, y el uso de un scheduler (reduciendo la tasa de aprendizaje por 0.1 en las épocas 50 y 75 durante 100 épocas) no es arbitraria; replica exactamente el esquema base (baseline) oficial establecido por los autores del benchmark MedMNIST v2.
 
 Durante el entrenamiento se guarda el mejor modelo (mayor precisión de validación) en `mejor_modelo_bloodmnist.pth`, y se registra el historial de *loss* de entrenamiento y precisión de validación por época para graficar las curvas de trazabilidad.
 
