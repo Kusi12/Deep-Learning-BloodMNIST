@@ -64,9 +64,9 @@ Preprocesamiento: Se aplican transformaciones base de normalización y conversi�
 
 ## 3. Definición de la Tarea
 
-Definición Técnica: Problema de clasificación multiclase supervisada de células sanguíneas periféricas a partir de imágenes microscópicas de baja resolución.
+- Definición Técnica: Problema de clasificación multiclase supervisada de células sanguíneas periféricas a partir de imágenes microscópicas de baja resolución.
 
-Aplicación Biomédica: Automatizar el conteo y clasificación celular en frotis de sangre periférica, lo cual acelera diagnósticos en hematología y reduce la carga operativa en laboratorios.
+- Aplicación Biomédica: Automatizar el conteo y clasificación celular en frotis de sangre periférica, lo cual acelera diagnósticos en hematología y reduce la carga operativa en laboratorios.
 
 ## 4. Selección de Arquitectura
 
@@ -77,6 +77,15 @@ Se implementa **ResNet-18** (`torchvision.models.resnet18`, `weights=None`) con 
 - **Capa final (`fc`)** adaptada a 8 clases de salida.
 
 ## 5. Justificación de Hiperparámetros
+
+| Parámetro | Valor |
+|---|---|
+| Épocas | 100 |
+| Función de pérdida | Cross-Entropy Loss |
+| Optimizador | Adam (lr = 0.001) |
+| Batch size | 128 |
+| Scheduler | `MultiStepLR`, milestones en épocas 50 y 75, gamma = 0.1 |
+| Hardware recomendado | GPU (Colab T4) |
 
 Configuración: Épocas: 100 | Función de pérdida: Cross-Entropy Loss | Optimizador: Adam (η= 0.001) | Batch size: 128 | Scheduler: MultiStepLR (milestones en épocas 50 y 75, γ = 0.1).
 
