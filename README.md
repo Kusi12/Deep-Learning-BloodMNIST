@@ -39,7 +39,7 @@ La aplicación biomédica de esta tarea es automatizar el conteo y clasificació
 ---
    
 
-## Dataset y Estadísticas Generales
+## 1. Dataset y Estadísticas Generales
 
 | Propiedad | Valor |
 |---|---|
@@ -58,17 +58,17 @@ Splits: Se mantuvo la división oficial de MedMNIST (70% train / 10% val / 20% t
 Los datos se descargan automáticamente mediante la librería medmnist y se cargan en DataLoaders de PyTorch con batch_size=128.
 
 
-## Feature Engineering y Exploración Visual
+## 2. Feature Engineering y Exploración Visual
 
 Preprocesamiento: Se aplican transformaciones base de normalización y conversión a tensores (ToTensor + Normalize).
 
-## Definición de la Tarea
+## 3. Definición de la Tarea
 
 Definición Técnica: Problema de clasificación multiclase supervisada de células sanguíneas periféricas a partir de imágenes microscópicas de baja resolución.
 
 Aplicación Biomédica: Automatizar el conteo y clasificación celular en frotis de sangre periférica, lo cual acelera diagnósticos en hematología y reduce la carga operativa en laboratorios.
 
-## Selección de Arquitectura
+## 4. Selección de Arquitectura
 
 Se implementa **ResNet-18** (`torchvision.models.resnet18`, `weights=None`) con dos modificaciones clave para adaptarla a imágenes pequeñas de 28×28 px:
 
@@ -76,19 +76,19 @@ Se implementa **ResNet-18** (`torchvision.models.resnet18`, `weights=None`) con 
 - **`maxpool`** inicial se reemplaza por `nn.Identity()` (se elimina).
 - **Capa final (`fc`)** adaptada a 8 clases de salida.
 
-## ustificación de Hiperparámetros
+## 5. Justificación de Hiperparámetros
 
 Configuración: Épocas: 100 | Función de pérdida: Cross-Entropy Loss | Optimizador: Adam (η= 0.001) | Batch size: 128 | Scheduler: MultiStepLR (milestones en épocas 50 y 75, γ = 0.1).
 
 Fundamentación Técnica: La elección de estos hiperparámetros no es arbitraria; replica exactamente el esquema base (baseline) oficial establecido por los autores del benchmark MedMNIST v2. El uso de Cross-Entropy es estándar para multiclase y el scheduler permite refinar la convergencia en etapas finales.
 
-## Dinámica y Evaluación de Entrenamiento
+## 6. Dinámica y Evaluación de Entrenamiento
 
 Trazabilidad: Se registra el historial de pérdida de entrenamiento (L train) y precisión de validación por época, graficando las curvas con líneas verticales que marcan las caídas del learning rate.
 
 Control de Entrenamiento: Se aplica checkpointing guardando automáticamente el mejor modelo en mejor_modelo_bloodmnist.pth (basado en la mayor precisión de validación).
 
-## Evaluación en Test y Métricas
+## 7. Evaluación en Test y Métricas
 
 Desempeño Global: Precisión final en test de 94.94% (Accuracy global de 0.95). Mejor precisión de validación: 95.91%.
 
@@ -127,7 +127,7 @@ El notebook también genera:
 
 Las clases con menor desempeño son `IG` (granulocito inmaduro) y `Monocyte`, probablemente por mayor solapamiento visual con otras clases mieloides a resolución tan baja.
 
-## Conclusiones y Sentido Crítico
+## 8. Conclusiones y Sentido Crítico
 
 Hallazgos: El modelo alcanza un rendimiento competitivo cercano al benchmark oficial. Las clases con menor desempeño son IG (granulocito inmaduro) y Monocyte, debido al solapamiento visual provocado por la baja resolución.
 
