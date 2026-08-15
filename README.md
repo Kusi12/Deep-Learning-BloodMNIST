@@ -69,8 +69,6 @@ Se implementa **ResNet-18** (`torchvision.models.resnet18`, `weights=None`) con 
 | Scheduler | `MultiStepLR`, milestones en épocas 50 y 75, gamma = 0.1 |
 | Hardware recomendado | GPU (Colab T4) |
 
-## Justificación:
-
 La elección de Adam (lr=0.001), Batch Size de 128, Cross-Entropy Loss, y el uso de un scheduler (reduciendo la tasa de aprendizaje por 0.1 en las épocas 50 y 75 durante 100 épocas) no es arbitraria; replica exactamente el esquema base (baseline) oficial establecido por los autores del benchmark MedMNIST v2.
 
 Durante el entrenamiento se guarda el mejor modelo (mayor precisión de validación) en `mejor_modelo_bloodmnist.pth`, y se registra el historial de *loss* de entrenamiento y precisión de validación por época para graficar las curvas de trazabilidad.
@@ -154,8 +152,18 @@ El notebook incluye dos mecanismos para probar el modelo entrenado más allá de
 2. **Muestra aleatoria del test set oficial:** extrae una imagen al azar directamente del archivo `bloodmnist.npz`, la clasifica y compara contra su etiqueta real, mostrando también el top-3 de probabilidades.
 
 ## Limitaciones y advertencias
-Los dataset de MedMNIST están intencionados para hacer benchmarking ligero de modelos. Las imágenes de BloodMNIST están comprimidas a **28×28 píxeles**, por lo que hay una pérdida masiva de detalle frente a fotografías reales de alta resolución tomadas en laboratorio. Por ello, evaluar el modelo no es confiable en la clasificación de imágenes externas.
-- El modelo se entrena **desde cero**, sin *transfer learning*.
+
+Restricción de resolución y uso clínico: Los conjuntos de datos de MedMNIST están diseñados exclusivamente para benchmarking ligero de modelos. Las imágenes de BloodMNIST están comprimidas a 28x28  píxeles, lo que genera una pérdida masiva de detalle frente a las fotografías reales de laboratorio (3x360x363 originales recortadas a 3x200x200). Por esta razón, los autores advierten explícitamente que el modelo no está destinado para uso clínico, ya que una reducción tan sustancial de la resolución puede ser insuficiente para capturar patologías complejas.
+
+Entrenamiento desde cero: El modelo se entrena completamente desde cero (sin pesos preentrenados de transfer learning), lo que limita la capacidad de generalización frente a variaciones en la tinción o artefactos de captura externos.
+
+## Propuestas de mejora para traducción e investigación futura
+
+Para superar estas limitaciones y avanzar hacia un entorno de validación real o clínico, se propone:
+
+1. Uso de imágenes de alta resolución: Entrenar arquitecturas con frotis de sangre periférica completos y de alta resolución que no omitan detalles ultraestructurales clave de las células.
+
+2. Transfer Learning médico: Explorar estrategias de transferencia de aprendizaje con modelos preentrenados en dominios biomédicos complejos en lugar de inicializar los pesos de la red de forma aleatoria.
 
 ## Archivos generados
 
