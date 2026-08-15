@@ -64,6 +64,8 @@ La aplicación biomédica de esta tarea es automatizar el conteo y clasificació
 
 Preprocesamiento: Se aplicó una transformación estándar que convierte las imágenes a tensores de PyTorch y las normaliza (ToTensor y Normalize con media y desviación estándar de 0.5).
 
+Inspección Visual: Debido a la baja resolución espacial de 28x28 píxeles, la exploración visual previa evidencia que las características morfológicas y los bordes celulares se encuentran altamente comprimidos. Esto justifica la necesidad de utilizar aprendizaje profundo (Deep Learning) en lugar de descriptores manuales tradicionales para capturar patrones biológicos complejos.
+
 ## 3. Definición de la Tarea
 
 - Definición Técnica: Problema de clasificación multiclase supervisada de células sanguíneas periféricas a partir de imágenes microscópicas de baja resolución.
