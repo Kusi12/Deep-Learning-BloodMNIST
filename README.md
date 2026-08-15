@@ -30,6 +30,8 @@ El notebook `Blood_classification_v4.ipynb` implementa un pipeline completo de *
 
 Se utiliza **BloodMNIST**, parte de la colección estandarizada **MedMNIST v2**, un conjunto de benchmarks ligeros para evaluar algoritmos de Machine Learning en imágenes biomédicas.
 
+En adición, as imágenes originales tenían una resolución de 3x360x363 píxeles. Luego, fueron recortadas en el centro a 3x200x200 y finalmente redimensionadas a 3x28x28 mediante interpolación spline cúbica.
+
 | Propiedad | Valor |
 |---|---|
 | Total de imágenes | 17,092 |
@@ -41,6 +43,8 @@ Se utiliza **BloodMNIST**, parte de la colección estandarizada **MedMNIST v2**,
 **Clases (8):** `Basophil`, `Eosinophil`, `Erythroblast`, `IG` (granulocito inmaduro), `Lymphocyte`, `Monocyte`, `Neutrophil`, `Platelet`.
 
 Los datos se descargan automáticamente mediante la librería `medmnist` (`train`, `val`, `test`) y se cargan en `DataLoader`s de PyTorch con `batch_size=128`.
+
+En adición, se mantuvo la división oficial de MedMNIST (70% train, 10% val, 20% test) para garantizar una comparación justa y reproducible con el benchmark oficial.
 
 ## Arquitectura del modelo
 
