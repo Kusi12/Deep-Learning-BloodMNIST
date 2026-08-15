@@ -5,22 +5,148 @@ Trabajo final del seminario **Deep Learning applied in Bioimage Analysis** -- Po
 
 **Autores:** Gianfranco Moises Poma Canchari --100%, Valeshka Lavado Guerra --100%, Andy Edery Wusen --100%, Kusi Uñapillco Franco --100%
 
+
+## Descripción general
+
+El notebook `Blood_classification_v4.ipynb` implementa un pipeline completo de *deep learning* con **PyTorch** para resolver un problema de **clasificación multiclase de células sanguíneas periféricas** a partir de imágenes microscópicas de baja resolución. El objetivo es evaluar la capacidad de abstracción y generalización de una arquitectura convolucional profunda (ResNet) entrenada **desde cero** (sin pesos preentrenados) sobre el benchmark **BloodMNIST**.
+
+## Relevancia
+
+La aplicación biomédica de esta tarea es automatizar el conteo y clasificación celular en frotis de sangre periférica, lo cual acelera diagnósticos en hematología y reduce la carga operativa en laboratorios.
+
+
+
 ---
 
 ## Tabla de contenidos
 
-- [Descripción general](#-descripción-general)
-- [Dataset: BloodMNIST](#-dataset-bloodmnist)
-- [Arquitectura del modelo](#-arquitectura-del-modelo)
-- [Requisitos](#-requisitos)
-- [Estructura del notebook](#-estructura-del-notebook)
-- [Cómo ejecutar](#-cómo-ejecutar)
-- [Resultados](#-resultados)
-- [Pruebas interactivas](#-pruebas-interactivas)
-- [Limitaciones y advertencias](#-limitaciones-y-advertencias)
-- [Archivos generados](#-archivos-generados)
+1. Dataset y Estadísticas Generales
+
+2. Feature Engineering y Exploración Visual
+
+3. Definición de la Tarea
+
+4. Selección de Arquitectura
+
+5. Justificación de Hiperparámetros
+
+6. Dinámica y Evaluación de Entrenamiento
+
+7. Evaluación en Test y Métricas
+
+8. Conclusiones y Sentido Crítico
 
 ---
+   
+
+## Dataset y Estadísticas Generales
+
+| Propiedad | Valor |
+|---|---|
+| Total de imágenes | 17,092 |
+| Número de clases | 8 |
+| Resolución | 3×28×28 (RGB) |
+| Origen | Células individuales normales, sin infecciones, enfermedades hematológicas/oncológicas ni tratamiento farmacológico |
+| Preprocesamiento | Recorte central + redimensionado a 28×28 px |
+
+Adquisición y Dimensiones: Las imágenes originales tenían una resolución de 3x360x363 píxeles. Luego, fueron recortadas en el centro a 3x200x200 y finalmente redimensionadas a 3x28x28 mediante interpolación spline cúbica.  
+
+Balance de Clases: Total de 17,092 imágenes organizadas en 8 clases (Basophil, Eosinophil, Erythroblast, IG, Lymphocyte, Monocyte, Neutrophil, Platelet). No existe un desbalance de clases severo.  
+
+Splits: Se mantuvo la división oficial de MedMNIST (70% train / 10% val / 20% test) para garantizar una comparación justa y reproducible con el benchmark oficial.  
+
+Los datos se descargan automáticamente mediante la librería medmnist y se cargan en DataLoaders de PyTorch con batch_size=128.
+
+
+## Feature Engineering y Exploración Visual
+
+Preprocesamiento: Se aplican transformaciones base de normalización y conversión a tensores (ToTensor + Normalize).
+
+## Definición de la Tarea
+
+Definición Técnica: Problema de clasificación multiclase supervisada de células sanguíneas periféricas a partir de imágenes microscópicas de baja resolución.
+
+Aplicación Biomédica: Automatizar el conteo y clasificación celular en frotis de sangre periférica, lo cual acelera diagnósticos en hematología y reduce la carga operativa en laboratorios.
+
+## Selección de Arquitectura
+
+Se implementa **ResNet-18** (`torchvision.models.resnet18`, `weights=None`) con dos modificaciones clave para adaptarla a imágenes pequeñas de 28×28 px:
+
+- **`conv1`** se reemplaza por una convolución 3×3, stride 1, padding 1 (en vez de la 7×7/stride 2 original), evitando una reducción espacial agresiva desde el inicio.
+- **`maxpool`** inicial se reemplaza por `nn.Identity()` (se elimina).
+- **Capa final (`fc`)** adaptada a 8 clases de salida.
+
+## ustificación de Hiperparámetros
+
+Configuración: Épocas: 100 | Función de pérdida: Cross-Entropy Loss | Optimizador: Adam (η= 0.001) | Batch size: 128 | Scheduler: MultiStepLR (milestones en épocas 50 y 75, γ = 0.1).
+
+Fundamentación Técnica: La elección de estos hiperparámetros no es arbitraria; replica exactamente el esquema base (baseline) oficial establecido por los autores del benchmark MedMNIST v2. El uso de Cross-Entropy es estándar para multiclase y el scheduler permite refinar la convergencia en etapas finales.
+
+## Dinámica y Evaluación de Entrenamiento
+
+Trazabilidad: Se registra el historial de pérdida de entrenamiento (L train) y precisión de validación por época, graficando las curvas con líneas verticales que marcan las caídas del learning rate.
+
+Control de Entrenamiento: Se aplica checkpointing guardando automáticamente el mejor modelo en mejor_modelo_bloodmnist.pth (basado en la mayor precisión de validación).
+
+## Evaluación en Test y Métricas
+
+Desempeño Global: Precisión final en test de 94.94% (Accuracy global de 0.95). Mejor precisión de validación: 95.91%.
+
+Métricas Detalladas (Test Set, 3,421 imágenes):
+
+Reporte de Clasificación: Incluye Precision, Recall y F1-score por clase (destacando clases como Basophil, Eosinophil, Platelet, etc.).
+
+Matriz de Confusión: Generada mediante un mapa de calor (heatmap) para identificar confusiones específicas (ej. clases IG y Monocyte).
+
+Inferencia Visual: El notebook incluye pruebas interactivas con imágenes propias y muestras aleatorias del conjunto .npz mostrando el top-3 de probabilidades y niveles de confianza (softmax).
+
+Resultados obtenidos en la corrida registrada en el notebook:
+
+- **Mejor precisión de validación:** 95.91%
+- **Precisión final en test:** 94.94%
+
+**Reporte de clasificación (test set, 3,421 imágenes):**
+
+| Clase | Precision | Recall | F1-score | Support |
+|---|---|---|---|---|
+| Basophil | 0.93 | 0.92 | 0.92 | 244 |
+| Eosinophil | 1.00 | 0.98 | 0.99 | 624 |
+| Erythroblast | 0.97 | 0.95 | 0.96 | 311 |
+| IG | 0.89 | 0.87 | 0.88 | 579 |
+| Lymphocyte | 0.95 | 0.95 | 0.95 | 243 |
+| Monocyte | 0.86 | 0.92 | 0.89 | 284 |
+| Neutrophil | 0.96 | 0.97 | 0.97 | 666 |
+| Platelet | 1.00 | 1.00 | 1.00 | 470 |
+| **Accuracy global** | | | **0.95** | 3421 |
+| Macro avg | 0.94 | 0.95 | 0.94 | 3421 |
+| Weighted avg | 0.95 | 0.95 | 0.95 | 3421 |
+
+El notebook también genera:
+- Curvas de *loss* de entrenamiento y precisión de validación por época (con líneas verticales marcando las caídas del learning rate en las épocas 50 y 75).
+- Matriz de confusión (heatmap) sobre el conjunto de test.
+
+Las clases con menor desempeño son `IG` (granulocito inmaduro) y `Monocyte`, probablemente por mayor solapamiento visual con otras clases mieloides a resolución tan baja.
+
+## Conclusiones y Sentido Crítico
+
+Hallazgos: El modelo alcanza un rendimiento competitivo cercano al benchmark oficial. Las clases con menor desempeño son IG (granulocito inmaduro) y Monocyte, debido al solapamiento visual provocado por la baja resolución.
+
+Limitaciones y advertencias: Restricción de resolución y uso clínico: Los conjuntos de datos de MedMNIST están diseñados exclusivamente para benchmarking ligero de modelos. Las imágenes de BloodMNIST están comprimidas a 28x28  píxeles, lo que genera una pérdida masiva de detalle frente a las fotografías reales de laboratorio (3x360x363 originales recortadas a 3x200x200). Por esta razón, los autores advierten explícitamente que el modelo no está destinado para uso clínico, ya que una reducción tan sustancial de la resolución puede ser insuficiente para capturar patologías complejas.
+
+Entrenamiento desde cero: El modelo se entrena completamente desde cero (sin pesos preentrenados de transfer learning), lo que limita la capacidad de generalización frente a variaciones en la tinción o artefactos de captura externos.
+
+Propuestas de mejora para traducción e investigación futura:
+
+Para superar estas limitaciones y avanzar hacia un entorno de validación real o clínico, se propone:
+
+1. Uso de imágenes de alta resolución: Entrenar arquitecturas con frotis de sangre periférica completos y de alta resolución que no omitan detalles ultraestructurales clave de las células.
+
+2. Transfer Learning médico: Explorar estrategias de transferencia de aprendizaje con modelos preentrenados en dominios biomédicos complejos en lugar de inicializar los pesos de la red de forma aleatoria.
+
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 
 ## Descripción general
 
