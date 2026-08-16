@@ -109,7 +109,8 @@ Conclusiones para el Pipeline de Preprocesamiento:
 | **Stage 1** | `ResidualBlock` | Conv3x3 ($s=1$) $\rightarrow$ Conv3x3 ($s=1$) + Identity | $32 \rightarrow 32$ | $H \times W$ |
 | **Stage 2** | `ResidualBlock` (Downsample) | Conv3x3 ($s=2$) $\rightarrow$ Conv3x3 ($s=1$) + Shortcut (Conv1x1, $s=2$) | $32 \rightarrow 64$ | $H/2 \times W/2$ |
 | **Stage 3** | `ResidualBlock` (Downsample) | Conv3x3 ($s=2$) $\rightarrow$ Conv3x3 ($s=1$) + Shortcut (Conv1x1, $s=2$) | $64 \rightarrow 128$ | $H/4 \times W/4$ |
-| **Classifier** | AdaptiveAvgPool2d + Dropout + FC | `GAP (1x1)` $\rightarrow$ `Dropout(p=0.4)` $\rightarrow$ `Linear(128, 8)` | $128 \rightarrow \text{num\_classes}$ | $1 \times 1 \rightarrow \text{logits}$ |
+| **Classifier** | AdaptiveAvgPool2d + Dropout + FC | `GAP (1x1)` $\rightarrow$ `Dropout(p=0.4)` $\rightarrow$ `Linear(128, 8)` | $128 \rightarrow \text{num}_{\text{classes}}$ | $1 \times 1 \rightarrow \text{logits}$ |
+
 
 En lugar de utilizar modelos preentrenados genéricos, se desarrolló e implementó desde cero una arquitectura residual personalizada denominada MiPropiaResNet:
 
