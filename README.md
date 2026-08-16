@@ -158,10 +158,6 @@ Especificaciones Clave
 
 - Inferencia Visual: El notebook incluye pruebas interactivas con imágenes propias y muestras aleatorias del conjunto .npz mostrando el top-3 de probabilidades y niveles de confianza (softmax).
 
-Resultados obtenidos en la corrida registrada en el notebook:
-
-- **Mejor precisión de validación:** 95.91%
-- **Precisión final en test:** 94.94%
 
 **Reporte de clasificación (test set, 3,421 imágenes):**
 
