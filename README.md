@@ -102,6 +102,15 @@ Conclusiones para el Pipeline de Preprocesamiento:
 
 ## 4. Selección de Arquitectura
 
+| Etapa / Bloque | Componentes Principales | Configuración / Operación | Canales Entrada $\rightarrow$ Salida | Dimensión Espacial |
+| :--- | :--- | :--- | :---: | :---: |
+| **Input** | Tensor de entrada | Imagen RGB / Multicanal | `in_channels` | $H \times W$ |
+| **Stem** | Conv2D + BatchNorm + ReLU | `kernel=3x3, stride=1, padding=1` | $3 \rightarrow 32$ | $H \times W$ |
+| **Stage 1** | `ResidualBlock` | Conv3x3 ($s=1$) $\rightarrow$ Conv3x3 ($s=1$) + Identity | $32 \rightarrow 32$ | $H \times W$ |
+| **Stage 2** | `ResidualBlock` (Downsample) | Conv3x3 ($s=2$) $\rightarrow$ Conv3x3 ($s=1$) + Shortcut (Conv1x1, $s=2$) | $32 \rightarrow 64$ | $H/2 \times W/2$ |
+| **Stage 3** | `ResidualBlock` (Downsample) | Conv3x3 ($s=2$) $\rightarrow$ Conv3x3 ($s=1$) + Shortcut (Conv1x1, $s=2$) | $64 \rightarrow 128$ | $H/4 \times W/4$ |
+| **Classifier** | AdaptiveAvgPool2d + Dropout + FC | `GAP (1x1)` $\rightarrow$ `Dropout(p=0.4)` $\rightarrow$ `Linear(128, 8)` | $128 \rightarrow \text{num\_classes}$ | $1 \times 1 \rightarrow \text{logits}$ |
+
 En lugar de utilizar modelos preentrenados genéricos, se desarrolló e implementó desde cero una arquitectura residual personalizada denominada MiPropiaResNet:
 
    - Estructura base (Stem): Compuesta por una capa convolucional de $3 \times 3$ (32 canales), normalización        por lotes (Batch Normalization) y activación ReLU.
@@ -109,6 +118,11 @@ En lugar de utilizar modelos preentrenados genéricos, se desarrolló e implemen
    - Etapas Residuales: Consta de tres etapas sucesivas de bloques residuales que aumentan progresivamente los       mapas de características (32, 64 y 128 canales) aplicando convoluciones de $3 \times 3$ y accesos directos      (shortcuts) para evitar la degradación del gradiente.
   
    - Clasificación: Utiliza un Adaptive Average Pooling global ($1 \times 1$), una capa de Dropout ($p = 0.4$)       para mitigar el sobreajuste, y una capa totalmente conectada (Fully Connected) proyectada a las 8 clases        de salida.
+
+Especificaciones Clave
+* **Estrategia Residual:** Conexiones directas de tipo identity/projection según cambio de resolución o canales.
+* **Regularización:** Inclusión de capa `Dropout(p=0.4)` previa a la clasificación para mitigar sobreajuste.
+* **Cuello de Botella Clasificador:** Reducción espacial vía **Global Average Pooling** previo a la capa lineal final.
 
 ## 5. Justificación de Hiperparámetros
 
