@@ -62,9 +62,37 @@ La aplicación biomédica de esta tarea es automatizar el conteo y clasificació
 
 ## 2. Feature Engineering y Exploración Visual
 
-Preprocesamiento: Se aplicó una transformación estándar que convierte las imágenes a tensores de PyTorch y las normaliza (ToTensor y Normalize con media y desviación estándar de 0.5).
+En esta sección se realizó la inspección cualitativa y cuantitativa de patrones biológicos clave en las imágenes histopatológicas. El objetivo es identificar características morfológicas determinantes.
 
-Inspección Visual: Debido a la baja resolución espacial de 28x28 píxeles, la exploración visual previa evidencia que las características morfológicas y los bordes celulares se encuentran altamente comprimidos. Esto justifica la necesidad de utilizar aprendizaje profundo (Deep Learning) en lugar de descriptores manuales tradicionales para capturar patrones biológicos complejos.
+Objetivos de la Exploración:
+
+* **Identificar atipia nuclear:** Evaluar variaciones en tamaño, forma e hipercromasia nuclear.
+* **Analizar textura y microambiente:** Cuantificar la heterogeneidad tisular y desorganización celular.
+* **Delinear bordes y membranas:** Evaluar la pérdida de cohesión celular y límites de invasión tumoral.
+* **Justificar el preprocesamiento:** Determinar necesidades de normalización de color, realce de contraste y reducción de ruido.
+
+Métodos y Técnicas Aplicadas:
+
+| Filtro / Descriptor | Tipo de Extracción | Patrón Biológico Evaluado | Justificación para el Preprocesamiento |
+| :--- | :--- | :--- | :--- |
+| **Umbralización Otsu** | Segmentación por intensidad | Segmentación de núcleos hipercromáticos y áreas de necrosis | Permite aislar la carga celular vs. fondo/estroma, justificando el filtrado de artefactos y recorte de parches con alta densidad tisular. |
+| **Filtro Sobel / Canny** | Gradiente espacial / Bordes | Membranas celulares, transiciones epitelio-estroma | Detecta la pérdida de bordes definidos típica de la atipia; justifica el uso de normalización de contraste y filtros de agudizamiento (*sharpening*). |
+| **Local Binary Patterns (LBP)** | Textura local invariante | Micro-texturas nucleares y granularidad de la cromatina | Captura patrones finos de malignidad independientes de la iluminación global; fundamenta la necesidad de aumentos de datos (*data augmentation*) de textura/ruido. |
+| **Descriptores Haralick (GLCM)** | Estadísticos de segundo orden | Heterogeneidad tisular (contraste, energía, homogeneidad, correlación) | Modela la desorganización estructural del tejido; valida la relevancia de conservar detalles de alta frecuencia sin aplicar un suavizado excesivo. |
+| **Mapas de Intensidad (Espacios HSV / LAB / Desconvolución H&E)** | Colorimetría y concentración de tinción | Concentración de Hematoxilina (núcleos) y Eosina (citoplasma) | Evidencia la variabilidad por lotes de tinción; **justifica directamente la normalización de color (e.g., Macenko o Vahadane)** antes de alimentar modelos de aprendizaje profundo. |
+
+
+Hallazgos Clave:
+
+* **Hipercromasia y Densidad Nuclear:** El canal de hematoxilina y la umbralización adaptativa revelan aglomeraciones nucleares irregulares en regiones malignas, confirmando que la densidad de núcleos es una señal discriminante primaria.
+* **Variabilidad de Tinción:** Se observaron variaciones notables de luminosidad y saturación entre láminas, demostrando que la falta de normalización de color induciría sesgo de adquisición (*batch effect*).
+* **Heterogeneidad de Bordes:** Las regiones benignas muestran límites celulares continuos y homogéneos bajo el operador Sobel, mientras que las zonas atípicas presentan bordes fragmentados y difusos.
+
+Conclusiones para el Pipeline de Preprocesamiento:
+
+1. **Normalización de Color Obligatoria:** Implementación de normalización H&E (Macenko/Reinhard) para estandarizar la respuesta espectral entre muestras.
+2. **Filtrado Espacial Controlado:** Uso de eliminación de ruido (*denoising*) con preservación de bordes (e.g., filtro bilateral o Gaussiano leve) para no degradar las micro-texturas detectadas por LBP.
+3. **Selección de ROIs basada en Densidad:** Filtrado de parches con bajo contenido celular mediante máscaras de Otsu para entrenar únicamente sobre tejido biológicamente relevante.
 
 ## 3. Definición de la Tarea
 
